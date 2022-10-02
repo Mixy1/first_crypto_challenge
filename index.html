@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto !</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Show text with the flag but each character is in a square -->
+    <div class="box">
+        <div class="columns is-centered">
+            <div class="column">
+                <div class="notification is-primary">
+                    <div class="columns">
+                        <div class="column is-2">
+                            <figure class="image is-128x128">
+                                <img src="UM-CTF-team.png">
+                            </figure>
+                        </div>
+                        <div class="column is-8">
+                            <p class="title">Crypto !</p>
+                            <p class="subtitle">Find the flag by reversing the modfications done to the flag!</p>
+                            <p class="subtitle">The flag is in the format flag{a-zA-Z0-9}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="box">
+                        <div class="notification is-primary">
+                            <p class="subtitle is-12 has-text-centered">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <!-- Add a button that shifts left  -->
+            <div class="columns is-centered">
+                <div class="column is-3">
+                    <button class="button is-primary is-fullwidth" id="left" onclick="shift_left()">
+                        <span class="icon">
+                            <i class="fas fa-arrow-left"></i>
+                        </span>
+                        &nbsp;
+                        Shift Left</button>
+                </div>
+                <div class="column is-3">
+                    <button class="button is-primary is-fullwidth" id="right" onclick="shift_right()">
+                        <span class="icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                        &nbsp;
+                        Shift Right</button>
+                </div>
+                <div class="column is-3">
+                    <button class="button is-primary is-fullwidth" id="up" onclick="rotate_up()">
+                        <span class="icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </span>
+                        &nbsp;
+                        Rotate Up</button>
+                </div>
+                <div class="column is-3">
+                    <button class="button is-primary is-fullwidth" id="down" onclick="rotate_down()">
+                        <span class="icon-text">
+                            <i class="fas fa-arrow-down"></i>
+                        </span>
+                        &nbsp;
+                        Rotate Down</button>
+                </div>
+
+            </div>
+            <script>
+                flag = "uApvnrGNEIDoeHorddAo"
+                flag_length = flag.length
+                characters_allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}"
+                function shift_left() {
+                    // shift the flag to the left
+                    flag = flag.substring(1, flag_length) + flag.substring(0, 1);
+                    update_flag()
+                }
+                function shift_right() {
+                    // shift the flag to the right
+                    flag = flag.substring(flag_length - 1, flag_length) + flag.substring(0, flag_length - 1);
+                    update_flag()
+                }
+                function rotate_up() {
+                    tmp_flag = ""
+                    for (var i = 0; i < flag_length; i++) {
+                        // rotate the flag up
+                        console.log(characters_allowed[(characters_allowed.indexOf(flag[i]) + 1) % characters_allowed.length])
+                        tmp_flag += characters_allowed[(characters_allowed.indexOf(flag[i]) + 1) % characters_allowed.length]
+                    }
+                    flag = tmp_flag
+                    update_flag()
+                }
+                function rotate_down() {
+                    tmp_flag = ""
+                    for (var i = 0; i < flag_length; i++) {
+                        // rotate the flag down
+                        tmp_flag += characters_allowed[(characters_allowed.indexOf(flag[i]) - 1) % characters_allowed.length]
+                    }
+                    flag = tmp_flag
+                    update_flag()
+                }
+                function update_flag() {
+                    // update the flag on the page
+                    var flag_div = document.getElementsByClassName("subtitle is-12 has-text-centered")[0];
+                    flag_div.innerHTML = "";
+                    for (var i = 0; i < flag_length; i++) {
+                        flag_div.innerHTML += "<span class='tag is-light'>" + flag[i] + "</span>\n";
+                    }
+                }
+                document.addEventListener('copy', function (e) {
+                    var text = window.getSelection().toString().replaceAll(' ', '');
+                    e.clipboardData.setData('text/plain', text);
+                    e.preventDefault();
+                });
+                update_flag()
+            </script>
+</body>
+
+</html>
