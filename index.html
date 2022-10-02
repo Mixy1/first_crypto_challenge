@@ -27,6 +27,9 @@
                             <p class="title">Crypto !</p>
                             <p class="subtitle">Find the flag by reversing the modfications done to the flag!</p>
                             <p class="subtitle">The flag is in the format flag{a-zA-Z0-9}</p>
+                            <p class="subtitle">Hint: Rotate untill the flag lights up yellow and then shift until it's
+                                green!!</p>
+
                         </div>
                     </div>
                 </div>
@@ -77,10 +80,19 @@
                 </div>
 
             </div>
+            <div class="container is-centered">
+                <div class="columns is-centered">
+                    <div class="column is-half has-text-centered">
+                        Submit your flag here:<br>
+                        <a>https://ctfd.mixynet.io</a>
+                    </div>
+                </div>
+            </div>
             <script>
-                flag = "uApvnrGNEIDoeHorddAo"
+                flag = "_H{r:yaoGClp}Yf)pTAg"
                 flag_length = flag.length
-                characters_allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}"
+                characters_allowed = "GA:a_)T{oHrYCfgp}ly"
+                characters_allowed_length = characters_allowed.length
                 function shift_left() {
                     // shift the flag to the left
                     flag = flag.substring(1, flag_length) + flag.substring(0, 1);
@@ -92,20 +104,20 @@
                     update_flag()
                 }
                 function rotate_up() {
-                    tmp_flag = ""
+                    let tmp_flag = ""
                     for (var i = 0; i < flag_length; i++) {
                         // rotate the flag up
-                        console.log(characters_allowed[(characters_allowed.indexOf(flag[i]) + 1) % characters_allowed.length])
-                        tmp_flag += characters_allowed[(characters_allowed.indexOf(flag[i]) + 1) % characters_allowed.length]
+                        tmp_flag += characters_allowed.at((characters_allowed.indexOf(flag[i]) + 1) % characters_allowed_length)
                     }
                     flag = tmp_flag
                     update_flag()
                 }
+                // rotate the flag up
                 function rotate_down() {
-                    tmp_flag = ""
+                    let tmp_flag = ""
                     for (var i = 0; i < flag_length; i++) {
                         // rotate the flag down
-                        tmp_flag += characters_allowed[(characters_allowed.indexOf(flag[i]) - 1) % characters_allowed.length]
+                        tmp_flag += characters_allowed.at((characters_allowed.indexOf(flag[i]) - 1) % characters_allowed_length)
                     }
                     flag = tmp_flag
                     update_flag()
@@ -114,8 +126,16 @@
                     // update the flag on the page
                     var flag_div = document.getElementsByClassName("subtitle is-12 has-text-centered")[0];
                     flag_div.innerHTML = "";
+                    let span = "<span class='tag is-light is-size-6 has-text-weight-bold'>"
+                    let continuous_flag = flag + flag
+                    if (continuous_flag.includes("flag")) {
+                        span = "<span class='tag is-warning is-size-6 has-text-weight-bold'>"
+                    }
+                    if (flag.includes("flag{") && flag.slice(-1) == "}") {
+                        span = "<span class='tag is-success is-size-6 has-text-weight-bold'>"
+                    }
                     for (var i = 0; i < flag_length; i++) {
-                        flag_div.innerHTML += "<span class='tag is-light'>" + flag[i] + "</span>\n";
+                        flag_div.innerHTML += span + flag[i] + "</span>\n";
                     }
                 }
                 document.addEventListener('copy', function (e) {
